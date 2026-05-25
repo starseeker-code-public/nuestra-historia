@@ -13,7 +13,7 @@ services:
       - db_data:/app/data
       - uploads:/app/uploads
     ports:
-      - "${BACKEND_PORT:-8742}:8000"
+      - "8742:8000"
     networks:
       - app_net
 
@@ -24,7 +24,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "${FRONTEND_PORT:-3742}:80"
+      - "3742:80"
     networks:
       - app_net
 
