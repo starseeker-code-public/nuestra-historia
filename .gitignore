@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 *.db
+db.sqlite3
 node_modules/
 dist/
 .env.local
@@ -10,3 +11,4 @@ uploads/
 data/
 *.egg-info/
 .venv/
+staticfiles/
