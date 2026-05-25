@@ -24,6 +24,7 @@ class BlogEntry(Base):
     date = Column(DateTime, default=datetime.utcnow)
     paragraph_hombre = Column(Text, nullable=True)
     paragraph_mujer = Column(Text, nullable=True)
+    categories = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

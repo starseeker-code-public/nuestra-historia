@@ -31,25 +31,34 @@ def get_blog_entry(db: Session, entry_id: int):
     return db.query(models.BlogEntry).filter(models.BlogEntry.id == entry_id).first()
 
 
-def create_blog_entry(db: Session, entry: schemas.BlogEntryCreate):
-    db_entry = models.BlogEntry(**entry.model_dump())
+def create_blog_entry(db: Session, data: dict):
+    db_entry = models.BlogEntry(**data)
     db.add(db_entry)
     db.commit()
     db.refresh(db_entry)
     return db_entry
 
 
-def update_blog_entry(db: Session, entry_id: int, entry_update: schemas.BlogEntryUpdate):
+def update_blog_entry(db: Session, entry_id: int, data: dict):
     db_entry = db.query(models.BlogEntry).filter(models.BlogEntry.id == entry_id).first()
     if not db_entry:
         return None
-    update_data = entry_update.model_dump(exclude_unset=True)
-    update_data["updated_at"] = datetime.utcnow()
-    for key, value in update_data.items():
+    data["updated_at"] = datetime.utcnow()
+    for key, value in data.items():
         setattr(db_entry, key, value)
     db.commit()
     db.refresh(db_entry)
     return db_entry
+
+
+def get_pending_for_role(db: Session, role: str):
+    field = models.BlogEntry.paragraph_hombre if role == "hombre" else models.BlogEntry.paragraph_mujer
+    return (
+        db.query(models.BlogEntry)
+        .filter((field.is_(None)) | (field == ""))
+        .order_by(models.BlogEntry.date.desc())
+        .all()
+    )
 
 
 def delete_blog_entry(db: Session, entry_id: int):

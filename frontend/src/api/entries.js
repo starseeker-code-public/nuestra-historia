@@ -6,6 +6,11 @@ export const entriesApi = {
     return data
   },
 
+  listPending: async () => {
+    const { data } = await client.get('/entries/pending/me')
+    return data
+  },
+
   get: async (id) => {
     const { data } = await client.get(`/entries/${id}`)
     return data

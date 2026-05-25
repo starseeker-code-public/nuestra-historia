@@ -5,9 +5,6 @@ from .auth import get_password_hash
 
 
 def seed_users(db: Session):
-    if db.query(models.User).count() > 0:
-        return
-
     users = [
         {
             "username": os.getenv("USER1_USERNAME", "el_hombre"),
@@ -25,7 +22,11 @@ def seed_users(db: Session):
 
     for data in users:
         password = data.pop("password")
-        user = models.User(**data, hashed_password=get_password_hash(password))
-        db.add(user)
+        existing = db.query(models.User).filter(models.User.username == data["username"]).first()
+        if existing:
+            existing.display_name = data["display_name"]
+            existing.hashed_password = get_password_hash(password)
+        else:
+            db.add(models.User(**data, hashed_password=get_password_hash(password)))
 
     db.commit()
