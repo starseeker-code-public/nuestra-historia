@@ -3,7 +3,7 @@ version: '3.9'
 services:
   backend:
     build: ./backend
-    container_name: nuestra_historia_backend
+    container_name: nuestra-historia-backend
     restart: unless-stopped
     env_file: .env
     environment:
@@ -19,7 +19,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: nuestra_historia_frontend
+    container_name: nuestra-historia-frontend
     restart: unless-stopped
     depends_on:
       - backend
